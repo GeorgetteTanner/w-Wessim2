@@ -133,20 +133,20 @@ reseq replaceN -r {GENOME}.fasta -R {GENOME}_noNs.fasta
 
 #Generate systematic errors for the genome 
 reseq illuminaPE -r {GENOME}_noNs.fasta -s {ReSeq_profile}.reseq \
---stopAfterEstimation --writeSysError {GENOME}_syserrors.fq
+--stopAfterEstimation --writeSysError {GENOME}_noNs_syserrors.fq
 
 #Convert genome to 2bit format
 faToTwoBit {GENOME}_noNs.fasta {GENOME}_noNs.fasta.2bit
 
 #Generate BLAT alignment 
-pblat {GENOME}_noNs.fasta.2bit {PROBES}.txt {PROBES}_{GENOME}.psl \
+pblat {GENOME}_noNs.fasta.2bit {PROBES}.txt {PROBES}_{GENOME}_noNs.psl \
 -threads=24 -minScore=95 -minIdentity=95
 
 #Generate fragments with w-Wessim2
 python2 w-Wessim2.py -R {GENOME}_noNs.fasta -S \
-{GENOME}_syserrors.fq -B {PROBES}_{GENOME}_noNs.psl -N \
-{READNUM} -O {GENOME}_w-wessim2_{READNUM}.fa -S \
-{GENOME}_noNs.fq -T {ReSeq_profile}.reseq -m 20 -f 170 -d 35
+{GENOME}_noNs_syserrors.fq -B {PROBES}_{GENOME}_noNs.psl -N \
+{READNUM} -O {GENOME}_w-wessim2_{READNUM}.fa \
+-T {ReSeq_profile}.reseq -m 20 -f 170 -d 35
 
 #Create reads with ReSeq
 reseq seqToIllumina -j 24 -s {ReSeq_profile}.reseq -i \

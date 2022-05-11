@@ -89,7 +89,7 @@ def main(argv):
     rat=False
     with open(args.syser,'r') as sysfi:
         for l in sysfi:
-            if l.startswith('@') and len(l)<100:
+            if l.startswith('@') and len(l)<500:
                 id=l.strip()[1:l.find(' ')]
                 if 'forward' in l:
                     direction='f'
