@@ -26,7 +26,6 @@ def main(argv):
     group2 = parser.add_argument_group('Optional parameters for exome capture')
     group2.add_argument('-f', metavar = 'INT', type=int, dest='fragsize', required=False, help='mean (f)ragment size, corresponding to insert size between paired ends. [200]', default=200)
     group2.add_argument('-d', metavar = 'INT', type=int, dest='fragsd', required=False, help='standard (d)eviation of fragment size [50]', default=50)
-    group2.add_argument('-m', metavar = 'INT', type=int, dest='fragmin', required=False, help='(m)inimum fragment length [read_length + 20]')
     group2.add_argument('-y', metavar = 'PERCENT',type=int, dest='bind', required=False, help='minimum required fraction of probe match to be h(y)bridized [50]', default=50)
 
 
@@ -40,14 +39,9 @@ def main(argv):
 
     isize = args.fragsize
     isd = args.fragsd
-    imin = args.fragmin
     bind = args.bind
 
     readnumber = args.readnumber
-
-    if isize < imin:
-        print "too small mean fragment size (" + str(isize) + ") compared to minimum length (" + str(imin) + "). Increase it and try again."
-        sys.exit(0)
 
     outfile = args.outfile
 
@@ -149,10 +143,10 @@ def main(argv):
                 continue
             ref_r= comp(ref)[::-1][:180]
             ref_f=ref[:180]
-            tendenseq_f=getSequence(tendendict_f, fragment)[:180]
-            ratesseq_f=getSequence(ratesdict_f, fragment)[:180]
-            tendenseq_r=getSequence(tendendict_r, fragment)[::-1][:180]
-            ratesseq_r=getSequence(ratesdict_r, fragment)[::-1][:180]
+            tendenseq_f=getSequence(tendendict_f, fragment)[:500]
+            ratesseq_f=getSequence(ratesdict_f, fragment)[:500]
+            tendenseq_r=getSequence(tendendict_r, fragment)[::-1][:500]
+            ratesseq_r=getSequence(ratesdict_r, fragment)[::-1][:500]
             fragment_length=str(int(fragment[2])-int(fragment[1]))
             if fragment[3]=='+':
                 ofile.write('>'+str(i+1)+' 1;'+fragment_length+';'+tendenseq_f+';'+ratesseq_f+'\n'+ref_f+'\n')
